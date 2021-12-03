@@ -1,0 +1,74 @@
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+        <param name="plugin-icon">images/pluginIcon.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
+    </plugin-info>
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="dashboard-item"/>
+
+    <!-- add our web resources -->
+    <web-resource key="dashboard-item-resources" name="dashboard-item Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <transformation extension="soy">
+            <transformer key="soyTransformer"/>
+        </transformation>
+
+        <resource type="download" name="dashboard-item.css" location="/css/dashboard-item.css"/>
+        <resource type="download" name="dashboard-item.js" location="/js/dashboard-item.js"/>
+        <resource type="download" name="dashboard-vm.js" location="/js/dashboard-vm.js"/>
+        <resource type="download" name="images/" location="/images"/>
+        <resource type="download" name="dashboard-item.soy.js" location="/soy/dashboard-item.soy"/>
+        <resource type="soy" name="soy.dashboardItem.templates.Static" location="/soy/dashboard-item.soy"/>
+        <context>atl.dashboard</context>
+        <context>dashboard-item</context>
+    </web-resource>
+
+    <dashboard-item key="soy-dashboard-item"
+                    i18n-name-key="soy.dashboard.item.title"
+                    configurable="true">
+        <definition>
+            <title key="soy.dashboard.item.title"/>
+            <categories>
+                <category>Jira</category>
+            </categories>
+            <author>
+                <name>Wadikk</name>
+            </author>
+            <thumbnail
+                    location="/download/resources/${atlassian.plugin.key}:dashboard-item-resources/images/pluginLogo.png"/>
+        </definition>
+        <description key="soy.dashboard.item.description"/>
+        <resource name="view" type="soy"
+                  location=":dashboard-item-resources/soy.dashboardItem.templates.Static"/>
+        <context-provider class="com.example.jira.plugin.DashboardItemContextProvider"/>
+        <amd-module>dashboard-items/item</amd-module>
+    </dashboard-item>
+
+    <dashboard-item key="vm-dashboard-item"
+                    i18n-name-key="velocity.dashboard.item.title"
+                    configurable="true">
+
+        <definition>
+            <title key="velocity.dashboard.item.title"/>
+            <categories>
+                <category>Jira</category>
+            </categories>
+            <author>
+                <name>Wadikk</name>
+            </author>
+            <thumbnail
+                    location="/download/resources/${atlassian.plugin.key}:dashboard-item-resources/images/pluginLogo.png"/>
+        </definition>
+        <description key="velocity.dashboard.item.description"/>
+        <resource name="view" type="velocity" location="templates/view.vm"/>
+        <context-provider class="com.example.jira.plugin.DashboardItemContextProvider"/>
+        <amd-module>dashboard-items/velocity</amd-module>
+    </dashboard-item>
+
+    <rest name="My Rest" key="rest-resource" path="/rest-resource" version="1.0"/>
+
+</atlassian-plugin>

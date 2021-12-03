@@ -1,0 +1,80 @@
+{namespace soy.dashboardItem.templates}
+
+/**
+* Hello world )))
+ * @param pluginName
+*/
+{template .Static}
+    <div id="dynamic-content"/>
+    <div class="static-dashboard-item">
+        <p>Hello ! I'm your dashboard item {$pluginName} for today.</p>
+    </div>
+{/template}
+
+/**
+* @param projects
+*/
+{template .ProjectsList}
+    <table class="aui">
+
+        <thead>
+        <tr>
+            <!-- <th id="basic-number">#</th>-->
+            <th id="project-key">Project</th>
+            <th id="fields-list">Fields</th>
+        </tr>
+        </thead>
+
+        {foreach $pr in $projects}
+            <tr>
+                <!--<td headers="basic-number">*</td>-->
+                <td headers="project-key">{$pr.project}</td>
+                <td headers="fields-list">{$pr.fields}</td>
+            </tr>
+        {/foreach}
+    </table>
+
+    <div class="buttons-container">
+        <div class="buttons">
+            <input class="button submit" type="submit" value="Refresh">
+        </div>
+    </div>
+{/template}
+
+/**
+*   Use this template if there is no project in response
+*/
+{template .Empty}
+    No projects yet.
+    <div class="buttons-container">
+        <div class="buttons">
+            <input class="button submit" type="submit" value="Refresh">
+        </div>
+    </div>
+{/template}
+
+/**
+*   Configuration dashboard item
+* @param projectsList
+*/
+{template .Configuration}
+    <form class="aui">
+        <fieldset class="group">
+            <legend><span>Choose project</span></legend>
+
+            {foreach $project in $projectsList}
+                <div class="checkbox">
+                    <input type="checkbox" id="{$project.projectName}" name="{$project.projectKey}" checked>
+                    <label for="{$project.projectName}">{$project.projectName}</label>
+                </div>
+            {/foreach}
+
+        </fieldset>
+        <div class="buttons-container">
+            <div class="buttons">
+                <input class="button submit" type="submit" value="Save" id="comment-save-button">
+                <a class="cancel" href="#">Cancel</a>
+            </div>
+        </div>
+    </form>
+{/template}

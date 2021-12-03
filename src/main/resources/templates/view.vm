@@ -1,0 +1,59 @@
+<div id="config" class="config-content" style="display:none;">
+    <form class="aui">
+        <div class="project-group">
+            <fieldset class="group">
+                <legend>Choose project</legend>
+
+                #foreach($project in $projects)
+                    <div>
+                        <input type="checkbox" id="${project.getName()}" name="${project.getKey()}" checked>
+                        <label for="${project.getName()}">${project.getName()}</label>
+                    </div>
+                #end
+            </fieldset>
+        </div>
+
+        <div class="buttons-container">
+            <div class="buttons">
+                <input class="button submit" id="btnSubmit" type="submit" value="Save">
+                <a class="cancel" href="#">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="view" class="view-context" style="display:none;">
+    <form class="aui">
+        <p>VM template</p>
+        <table class="aui">
+            <thead>
+            <tr>
+                <th id="project-key">First</th>
+                <th id="fieldsList-list">Last name</th>
+            </tr>
+            </thead>
+
+            <tbody id="myTable">
+            </tbody>
+        </table>
+
+        <div class="buttons-container">
+            <div class="buttons">
+                <input class="button submit" type="submit" value="Refresh">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="empty" class="empty-context" style="display:block;">
+    No projects yet.
+    <div class="buttons-container">
+        <div class="buttons">
+            <input class="button submit" type="submit" value="Refresh">
+        </div>
+    </div>
+</div>
+
+
+
+
