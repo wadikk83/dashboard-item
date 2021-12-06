@@ -4,13 +4,13 @@ package com.example.jira.plugin.util;
 import com.example.jira.plugin.entity.ProjectWithCFEntity;
 import com.example.jira.plugin.entity.ProjectsListEntity;
 import com.example.jira.plugin.model.XmlProjectsListModel;
-import com.example.jira.plugin.model.XmlRestfulTableRowModel;
+import com.example.jira.plugin.model.XmlProjectWithCFListModel;
 
 public class Mapper {
 
-    public static XmlRestfulTableRowModel toXml(ProjectWithCFEntity entity) {
+    public static XmlProjectWithCFListModel toXml(ProjectWithCFEntity entity) {
 
-        XmlRestfulTableRowModel model = new XmlRestfulTableRowModel();
+        XmlProjectWithCFListModel model = new XmlProjectWithCFListModel();
         model.setProject(entity.getProjectKey());
         model.setFields(entity.getFieldsList());
 

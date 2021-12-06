@@ -27,7 +27,7 @@
         <context>dashboard-item</context>
     </web-resource>
 
-    <dashboard-item key="soy-dashboard-item"
+    <dashboard-item key="dashboard-item"
                     i18n-name-key="soy.dashboard.item.title"
                     configurable="true">
         <definition>

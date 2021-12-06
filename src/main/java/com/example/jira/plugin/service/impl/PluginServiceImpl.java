@@ -8,13 +8,12 @@ import com.atlassian.jira.project.ProjectManager;
 import com.example.jira.plugin.entity.ProjectWithCFEntity;
 import com.example.jira.plugin.entity.ProjectsListEntity;
 import com.example.jira.plugin.model.XmlProjectsListModel;
-import com.example.jira.plugin.model.XmlRestfulTableRowModel;
+import com.example.jira.plugin.model.XmlProjectWithCFListModel;
 import com.example.jira.plugin.service.PluginService;
 import com.example.jira.plugin.util.Mapper;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
 
 public class PluginServiceImpl implements PluginService {
 
@@ -23,14 +22,14 @@ public class PluginServiceImpl implements PluginService {
     private ProjectManager projectManager = ComponentAccessor.getProjectManager();
 
     @Override
-    public List<XmlRestfulTableRowModel> getAll() {
+    public List<XmlProjectWithCFListModel> getAll() {
 
         List<Project> projectList = projectManager.getProjectObjects();
         return getListXmlEntityFromProjects(projectList);
     }
 
     @Override
-    public List<XmlRestfulTableRowModel> getListProjectsWithCustomFields(List<String> projectListKey) {
+    public List<XmlProjectWithCFListModel> getListProjectsWithCustomFields(List<String> projectListKey) {
 
         List<Project> projectList = projectListKey.stream()
                 .map(pk -> projectManager.getProjectByCurrentKey(pk))
@@ -67,10 +66,10 @@ public class PluginServiceImpl implements PluginService {
     /*
      * Convert to list XML
      * */
-    private List<XmlRestfulTableRowModel> getListXmlEntityFromProjects(List<Project> projectList) {
+    private List<XmlProjectWithCFListModel> getListXmlEntityFromProjects(List<Project> projectList) {
 
-        List<XmlRestfulTableRowModel> xmlRestfulTableRowModels = new ArrayList<>();
-        xmlRestfulTableRowModels.clear();
+        List<XmlProjectWithCFListModel> xmlProjectWithCFListModels = new ArrayList<>();
+        xmlProjectWithCFListModels.clear();
 
         //ProjectWithCFEntity entityFromProject = getEntityFromProject(projectList.get(0));
 
@@ -79,8 +78,8 @@ public class PluginServiceImpl implements PluginService {
                 .collect(Collectors.toList());
 
 
-        listEntity.stream().map(Mapper::toXml).forEach(xmlRestfulTableRowModels::add);
-        return xmlRestfulTableRowModels;
+        listEntity.stream().map(Mapper::toXml).forEach(xmlProjectWithCFListModels::add);
+        return xmlProjectWithCFListModels;
     }
 
     private List<XmlProjectsListModel> getXmlProjectsListModel(List<Project> projectsList) {

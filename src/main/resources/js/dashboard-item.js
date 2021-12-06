@@ -54,39 +54,7 @@ define('dashboard-items/item', ['underscore', 'jquery', 'wrm/context-path'], fun
     DashboardItem.prototype.renderEdit = function (context, preferences) {
         let $element = this.$element = $(context).find("#dynamic-content");
         let self = this;
-        /*this.requestProjectsList().done(function (data) {
-            self.projectsList = data;
-            $element.empty().html(soy.dashboardItem.templates.Configuration({projectsList: self.projectsList}));
-            self.API.resize();
 
-            let $form = $("form", $element);
-            $(".cancel", $form).click(_.bind(function () {
-                if (preferences['projects-list'])
-                    this.API.closeEdit();
-            }, this));
-
-            $form.submit(_.bind(function (event) {
-                event.preventDefault();
-
-                let preferences = getPreferencesFromForm($form);
-                console.log("preferences" + preferences);
-
-
-                console.log("pref ->", preferences.DP1);
-
-
-                //if (preferences['projects-list'] !== undefined) {
-                this.API.savePreferences(preferences);
-                this.API.showLoadingBar();
-                //}
-
-
-                /!*if (preferences.length != 0) {
-                    this.API.savePreferences(preferences);
-                    this.API.showLoadingBar();
-                }*!/
-            }, this));
-        });*/
         self.projectsList = getRequestProjectsList();
         $element.empty().html(soy.dashboardItem.templates.Configuration({projectsList: self.projectsList}));
 

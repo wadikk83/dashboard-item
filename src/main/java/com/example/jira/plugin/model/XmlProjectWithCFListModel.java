@@ -4,12 +4,15 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
 import java.util.List;
+
+/**
+ * Xml model for project with custom field entity
+ */
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class XmlRestfulTableRowModel {
+public class XmlProjectWithCFListModel {
 
     @XmlElement(name = "project")
     private String project;
@@ -18,10 +21,10 @@ public class XmlRestfulTableRowModel {
     private List<String> fields;
 
 
-    public XmlRestfulTableRowModel() {
+    public XmlProjectWithCFListModel() {
     }
 
-    public XmlRestfulTableRowModel(String project, List<String> fields) {
+    public XmlProjectWithCFListModel(String project, List<String> fields) {
         this.project = project;
         this.fields = fields;
     }

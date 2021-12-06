@@ -1,7 +1,7 @@
 package com.example.jira.plugin.controller;
 
 import com.example.jira.plugin.model.XmlProjectsListModel;
-import com.example.jira.plugin.model.XmlRestfulTableRowModel;
+import com.example.jira.plugin.model.XmlProjectWithCFListModel;
 import com.example.jira.plugin.service.PluginService;
 import com.example.jira.plugin.service.impl.PluginServiceImpl;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +16,6 @@ import javax.ws.rs.core.Response;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
  * Rest service for plugin
  */
@@ -25,7 +24,8 @@ public class RestController {
 
     private final PluginService service;
 
-    public RestController(PluginService service) {
+    public RestController() {
+
         this.service = new PluginServiceImpl();
     }
 
@@ -38,9 +38,9 @@ public class RestController {
     @Produces({MediaType.APPLICATION_JSON})
     public Response getByList(@RequestBody String request) {
         List<String> projectKey = Arrays.asList(request.split(","));
-        List<XmlRestfulTableRowModel> list = service.getListProjectsWithCustomFields(projectKey);
-        final GenericEntity<List<XmlRestfulTableRowModel>> entity
-                = new GenericEntity<List<XmlRestfulTableRowModel>>(list) {
+        List<XmlProjectWithCFListModel> list = service.getListProjectsWithCustomFields(projectKey);
+        final GenericEntity<List<XmlProjectWithCFListModel>> entity
+                = new GenericEntity<List<XmlProjectWithCFListModel>>(list) {
         };
         return Response.ok(entity).build();
     }
@@ -54,9 +54,9 @@ public class RestController {
     @Path("/all")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAll() {
-        List<XmlRestfulTableRowModel> list = service.getAll();
-        final GenericEntity<List<XmlRestfulTableRowModel>> entity
-                = new GenericEntity<List<XmlRestfulTableRowModel>>(list) {
+        List<XmlProjectWithCFListModel> list = service.getAll();
+        final GenericEntity<List<XmlProjectWithCFListModel>> entity
+                = new GenericEntity<List<XmlProjectWithCFListModel>>(list) {
         };
         return Response.ok(entity).build();
     }
