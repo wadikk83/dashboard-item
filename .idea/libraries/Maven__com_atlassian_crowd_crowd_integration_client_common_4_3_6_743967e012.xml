@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.atlassian.crowd:crowd-integration-client-common:4.3.6-743967e012">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/atlassian/crowd/crowd-integration-client-common/4.3.6-743967e012/crowd-integration-client-common-4.3.6-743967e012.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/atlassian/crowd/crowd-integration-client-common/4.3.6-743967e012/crowd-integration-client-common-4.3.6-743967e012-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/atlassian/crowd/crowd-integration-client-common/4.3.6-743967e012/crowd-integration-client-common-4.3.6-743967e012-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -100,14 +100,7 @@
             <groupId>com.atlassian.plugin</groupId>
             <artifactId>atlassian-spring-scanner-annotation</artifactId>
             <version>${atlassian.spring.scanner.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.atlassian.plugin</groupId>
-            <artifactId>atlassian-spring-scanner-runtime</artifactId>
-            <version>${atlassian.spring.scanner.version}</version>
-            <scope>runtime</scope>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -124,6 +117,19 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.core.version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -136,19 +142,7 @@
                 <configuration>
                     <productVersion>${jira.version}</productVersion>
                     <productDataVersion>${jira.version}</productDataVersion>
-                    <!-- Uncomment to install TestKit backdoor in JIRA. -->
-                    <!--
-                    <pluginArtifacts>
-                        <pluginArtifact>
-                            <groupId>com.atlassian.jira.tests</groupId>
-                            <artifactId>jira-testkit-plugin</artifactId>
-                            <version>${testkit.version}</version>
-                        </pluginArtifact>
-                    </pluginArtifacts>
-                    -->
-                    <jvmArgs>-Xms4g -Xmx8g -XX:MaxPermSize=2g -XX:-UseGCOverheadLimit -server -Dfile.encoding=iso-ir-100
-                        -Dsun.jnu.encoding=ISO-8859-1
-                    </jvmArgs>
+                    <jvmArgs>-Xms4g -Xmx8g -XX:MaxPermSize=2g -XX:-UseGCOverheadLimit -server -Dfile.encoding=iso-ir-100 -Dsun.jnu.encoding=ISO-8859-1</jvmArgs>
                     <enableQuickReload>true</enableQuickReload>
 
                     <!-- See here for an explanation of default instructions: -->
@@ -157,12 +151,13 @@
                         <Atlassian-Plugin-Key>${atlassian.plugin.key}</Atlassian-Plugin-Key>
 
                         <!-- Add package to export here -->
-                        <Export-Package>
-                            com.example.jira.plugin.api,
-                        </Export-Package>
+                        <!--<Export-Package>
+                            jira.ololo.api,
+                        </Export-Package>-->
 
                         <!-- Add package import here -->
                         <Import-Package>
+                            com.atlassian.jira.plugin.webfragment.conditions,
                             org.springframework.osgi.*;resolution:="optional",
                             org.eclipse.gemini.blueprint.*;resolution:="optional",
                             *
@@ -184,10 +179,8 @@
                             </applications>
                         </product>
                     </products>
-
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>com.atlassian.plugin</groupId>
                 <artifactId>atlassian-spring-scanner-maven-plugin</artifactId>
@@ -210,25 +203,6 @@
                     <verbose>false</verbose>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>com.atlassian.maven.plugins</groupId>
-                <artifactId>amps-maven-plugin</artifactId>
-                <configuration>
-                    <products>
-                        <product>
-                            <id>jira</id>
-                            <instanceId>jira</instanceId>
-                            <version>${jira.version}</version>
-                            <applications>
-                                <application>
-                                    <applicationKey>jira-software</applicationKey>
-                                    <version>${jira.version}</version>
-                                </application>
-                            </applications>
-                        </product>
-                    </products>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
@@ -249,12 +223,14 @@
     </repositories>
 
     <properties>
+        <lombok.version>1.18.12</lombok.version>
+        <jackson.core.version>2.13.0</jackson.core.version>
         <jira.version>8.20.0</jira.version>
-        <amps.version>8.1.2</amps.version>
+        <amps.version>8.1.1</amps.version>
         <plugin.testrunner.version>2.0.2</plugin.testrunner.version>
         <osgi.javaconfig.version>0.2.0</osgi.javaconfig.version>
         <spring.version>4.2.5.RELEASE</spring.version>
-        <atlassian.spring.scanner.version>1.2.13</atlassian.spring.scanner.version>
+        <atlassian.spring.scanner.version>2.2.0</atlassian.spring.scanner.version>
         <!-- This property ensures consistency between the key in atlassian-plugin.xml and the OSGi bundle's key. -->
         <atlassian.plugin.key>${project.groupId}.${project.artifactId}</atlassian.plugin.key>
         <!-- TestKit version 6.x for JIRA 6.x -->

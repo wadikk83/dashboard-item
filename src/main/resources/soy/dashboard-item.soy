@@ -2,12 +2,11 @@
 
 /**
 * Hello world )))
- * @param pluginName
 */
 {template .Static}
     <div id="dynamic-content"/>
     <div class="static-dashboard-item">
-        <p>Hello ! I'm your dashboard item {$pluginName} for today.</p>
+        <p>Hello ! I'm your dashboard item for today.</p>
     </div>
 {/template}
 
@@ -18,20 +17,18 @@
     <table class="aui">
 
         <thead>
-        <tr>
-            <!-- <th id="basic-number">#</th>-->
-            <th id="project-key">Project</th>
-            <th id="fields-list">Fields</th>
-        </tr>
-        </thead>
-
-        {foreach $pr in $projects}
             <tr>
-                <!--<td headers="basic-number">*</td>-->
-                <td headers="project-key">{$pr.project}</td>
-                <td headers="fields-list">{$pr.fields}</td>
+                <!-- <th id="basic-number">#</th>-->
+                <th id="project-key">Project</th>
+                <th id="fields-list">Fields</th>
             </tr>
-        {/foreach}
+        </thead>
+            {foreach $pr in $projects}
+                <tr>
+                    <td headers="project-key">{$pr.projectKey}</td>
+                    <td headers="fields-list">{$pr.fieldsList}</td>
+                </tr>
+            {/foreach}
     </table>
 
     <div class="buttons-container">

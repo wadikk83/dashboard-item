@@ -1,105 +1,85 @@
 define('dashboard-items/item', ['underscore', 'jquery', 'wrm/context-path'], function (_, $, contextPath) {
-    let DashboardItem = function (API) {
-        this.API = API;
-        this.projects = [];
-        this.projectsList = [];
-    };
-    /**
-     * Called to render the view for a fully configured dashboard item.
-     *
-     * @param context The surrounding <div/> context that this items should render into.
-     * @param preferences The user preferences saved for this dashboard item (e.g. filter id, number of results...)
-     */
-    DashboardItem.prototype.render = function (context, preferences) {
+    class DashboardItem {
+        constructor(API) {
+            this.API = API;
+            this.projects = [];
+            this.projectsList = [];
+        }
 
-        this.API.showLoadingBar();
-        let $element = this.$element = $(context).find("#dynamic-content");
-        let self = this;
-        this.requestData(preferences).done(function (data) {
-            self.API.hideLoadingBar();
-            self.projects = data;
+        render(context, preferences) {
+            this.API.showLoadingBar();
+            let $element = $(context).find("#dynamic-content");
+            this.requestData(preferences).done(data => {
+                this.API.hideLoadingBar();
+                this.projects = data;
 
-            $.each(data, function (index, value) {
-                console.log("index->" + index + " value-> " + value);
-            })
-
-
-            if (self.projects === undefined || self.projects.length === 0) {
-                $element.empty().html(soy.dashboardItem.templates.Empty());
-            } else {
-                $element.empty().html(soy.dashboardItem.templates.ProjectsList({projects: self.projects}));
-            }
-            self.API.resize();
-            $element.find(".submit").click(function (event) {
-                event.preventDefault();
-                self.render(context, preferences);
+                if (this.projects === undefined || this.projects.length === 0) {
+                    $element.empty().html(soy.dashboardItem.templates.Empty());
+                } else {
+                    $element.empty().html(soy.dashboardItem.templates.ProjectsList({projects: this.projects}));
+                }
+                this.API.resize();
+                $element.find(".submit").click(event => {
+                    event.preventDefault();
+                    this.render(context, preferences);
+                });
             });
-        });
-    };
+        }
 
-    DashboardItem.prototype.requestData = function (preferences) {
+        requestData(preferences) {
+            return $.ajax({
+                method: "POST",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(preferences),
+                url: contextPath() + "/rest/dashboard-item-resource/1.0/project-cf/get-list-projects-with-cf",
+                async: false,
+                cache: false,
+            });
+        };
 
-        return $.ajax({
-            method: "POST",
-            contentType: "application/json",
-            dataType: "json",
-            //data: JSON.stringify(preferences['projects-list']),
-            data: preferences['projects-list'],
-            url: contextPath() + "/rest/rest-resource/1.0/plugin-rest/get",
-            async: false,
-            cache: false,
-        });
-    };
+        renderEdit(context, preferences) {
+            let $element = $(context).find("#dynamic-content");
+            this.projectsList = this.getRequestProjectsList();
+            $element.empty().html(soy.dashboardItem.templates.Configuration({projectsList: this.projectsList}));
 
-    DashboardItem.prototype.renderEdit = function (context, preferences) {
-        let $element = this.$element = $(context).find("#dynamic-content");
-        let self = this;
+            this.API.once("afterRender", this.API.resize);
+            let $form = $("form", $element);
+            $(".cancel", $form).click(_.bind(() => {
+                if (preferences['projects-list'])
+                    this.API.closeEdit();
+            }, this));
 
-        self.projectsList = getRequestProjectsList();
-        $element.empty().html(soy.dashboardItem.templates.Configuration({projectsList: self.projectsList}));
-
-        this.API.once("afterRender", this.API.resize);
-        let $form = $("form", $element);
-        $(".cancel", $form).click(_.bind(function () {
-            if (preferences['projects-list'])
-                this.API.closeEdit();
-        }, this));
-
-        $form.submit(_.bind(function (event) {
-            event.preventDefault();
-            let preferences = getPreferencesFromForm($form);
-            if (preferences['projects-list'] !== undefined && preferences['projects-list'].length  !== 0) {
+            $form.submit(_.bind(event => {
+                event.preventDefault();
+                const preferences = this.getPreferencesFromForm($form);
                 this.API.savePreferences(preferences);
                 this.API.showLoadingBar();
-            }
-        }, this));
-    };
+            }, this));
+        }
 
-    function getPreferencesFromForm($form) {
-        let preferencesArray = $form.serializeArray();
-        let preferencesObject = {};
-        let array = [];
-        preferencesArray.forEach(function (element) {
-            array.push(element.name);
-        });
-        preferencesObject['projects-list'] = array;
+        getPreferencesFromForm($form) {
+            const preferencesArray = $form.serializeArray();
+            let preferencesObject = {};
+            preferencesArray.forEach(function (element) {
+                preferencesObject[element.name] = element.value;
+            });
+            return preferencesObject;
+        }
 
-        return preferencesObject;
-    }
-
-    function getRequestProjectsList() {
-        let responce = [];
-        $.ajax({
-            url: contextPath() + "/rest/rest-resource/1.0/plugin-rest/projects-list",
-            method: "GET",
-            async: false,
-            cache: false,
-            success: function (data) {
-                responce = data;
-            }
-        });
-
-        return responce;
+        getRequestProjectsList() {
+            let responce = [];
+            $.ajax({
+                url: contextPath() + "/rest/dashboard-item-resource/1.0/project-cf/get-list-projects",
+                method: "GET",
+                async: false,
+                cache: false,
+                success: function (data) {
+                    responce = data;
+                }
+            });
+            return responce;
+        }
     }
 
     return DashboardItem;

@@ -44,7 +44,6 @@
         <description key="soy.dashboard.item.description"/>
         <resource name="view" type="soy"
                   location=":dashboard-item-resources/soy.dashboardItem.templates.Static"/>
-        <context-provider class="com.example.jira.plugin.DashboardItemContextProvider"/>
         <amd-module>dashboard-items/item</amd-module>
     </dashboard-item>
 
@@ -69,6 +68,6 @@
         <amd-module>dashboard-items/velocity</amd-module>
     </dashboard-item>
 
-    <rest name="My Rest" key="rest-resource" path="/rest-resource" version="1.0"/>
+    <rest name="My Rest" key="rest-resource" path="/dashboard-item-resource" version="1.0"/>
 
 </atlassian-plugin>
